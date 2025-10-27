@@ -1,7 +1,8 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# 功能: 自动为 Markdown 文件中的二级/三级标题添加连续编号，并输出带编号的新文件
-# 用法: `python number_title.py <input.md>`，会在同目录生成 `<input_numbered.md>`
+"""
+功能: 自动为 Markdown 文件中的二级/三级标题添加连续编号，并输出带编号的新文件
+用法: `python number_title.py <input.md>`，会在同目录生成 `<input_numbered.md>`
+"""
 import re
 import sys
 from pathlib import Path
@@ -62,20 +63,20 @@ def number_markdown_headings(md_path: Path):
                 result.append(expected)
             continue
 
-        # # #### 处理
-        # if re.match(r'^####\s', line):
-        #     if section_counter == 0 or subsection_counter == 0:
-        #         result.append(line)
-        #         continue
-        #     subsubsection_counter += 1
-        #     title = re.sub(r'^####\s*', '', line).strip()
-        #     title = re.sub(r'^\d+(\.\d+)*\s+', '', title)
-        #     expected = f"#### {section_counter}.{subsection_counter}.{subsubsection_counter} {title}"
-        #     if line.strip() == expected:
-        #         result.append(line)
-        #     else:
-        #         result.append(expected)
-        #     continue
+        # #### 处理
+        if re.match(r'^####\s', line):
+            if section_counter == 0 or subsection_counter == 0:
+                result.append(line)
+                continue
+            subsubsection_counter += 1
+            title = re.sub(r'^####\s*', '', line).strip()
+            title = re.sub(r'^\d+(\.\d+)*\s+', '', title)
+            expected = f"#### {section_counter}.{subsection_counter}.{subsubsection_counter} {title}"
+            if line.strip() == expected:
+                result.append(line)
+            else:
+                result.append(expected)
+            continue
 
         result.append(line)
 
