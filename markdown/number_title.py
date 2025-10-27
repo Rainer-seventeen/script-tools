@@ -20,6 +20,7 @@ def number_markdown_headings(md_path: Path):
     subsection_counter = 0
     result = []
     in_code = False
+    subsubsection_counter = 0
 
     for line in lines:
         # 代码块保护
@@ -35,6 +36,7 @@ def number_markdown_headings(md_path: Path):
         if re.match(r'^##\s', line):
             section_counter += 1
             subsection_counter = 0
+            subsubsection_counter = 0
             title = re.sub(r'^##\s*', '', line).strip()
             title = re.sub(r'^\d+(\.\d+)*\s+', '', title)
             expected = f"## {section_counter} {title}"
@@ -50,6 +52,7 @@ def number_markdown_headings(md_path: Path):
                 result.append(line)
                 continue
             subsection_counter += 1
+            subsubsection_counter = 0
             title = re.sub(r'^###\s*', '', line).strip()
             title = re.sub(r'^\d+(\.\d+)*\s+', '', title)
             expected = f"### {section_counter}.{subsection_counter} {title}"
@@ -58,6 +61,21 @@ def number_markdown_headings(md_path: Path):
             else:
                 result.append(expected)
             continue
+
+        # # #### 处理
+        # if re.match(r'^####\s', line):
+        #     if section_counter == 0 or subsection_counter == 0:
+        #         result.append(line)
+        #         continue
+        #     subsubsection_counter += 1
+        #     title = re.sub(r'^####\s*', '', line).strip()
+        #     title = re.sub(r'^\d+(\.\d+)*\s+', '', title)
+        #     expected = f"#### {section_counter}.{subsection_counter}.{subsubsection_counter} {title}"
+        #     if line.strip() == expected:
+        #         result.append(line)
+        #     else:
+        #         result.append(expected)
+        #     continue
 
         result.append(line)
 
